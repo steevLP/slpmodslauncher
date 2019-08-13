@@ -43,7 +43,7 @@ Inside `packs.json` paste the following
 Remember you do not need to create a Folder for each modpack but i would recommend to creat one to keep a clean Structure.
 And now you're technically done.
 
-## Updateing and adding Packs
+## Updating and adding Packs
 But wait.. there is something we need to talk about, adding more packs and updating them. You can add another pack by doing the following
 first we need to edit the `"all":"1"` this is the number of all modpacks you have added so far and it is the latest pack added you will need to add 1 up on it each time you add another modpack.
 ```json

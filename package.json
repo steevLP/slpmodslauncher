@@ -1,0 +1,39 @@
+{
+  "name": "slpmods",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "publish": "electron-builder --publish always",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.pixeldev.slpmods",
+    "icon": "assets/icons/win/icon.ico",
+    "nsis": {
+      "installerIcon": "assets/icons/win/icon.ico",
+      "uninstallerIcon": "assets/icons/win/icon.ico"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steevLP/slpmodslauncher.git"
+  },
+  "author": "steev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steevLP/slpmods/issues"
+  },
+  "homepage": "https://github.com/steevLP/slpmods#readme",
+  "dependencies": {
+    "electron": "^6.0.2",
+    "electron-builder": "^21.2.0",
+    "electron-log": "^3.0.7",
+    "electron-updater": "^4.1.2",
+    "minecraft-launcher-core": "^3.8.0",
+    "node-fetch": "^2.6.0",
+    "require-from-url": "^3.1.2"
+  }
+}

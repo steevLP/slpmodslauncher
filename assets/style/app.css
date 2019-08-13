@@ -1,0 +1,147 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* Layout Classes */
+.topLayout{
+    position:absolute;
+    -webkit-app-region: drag;
+    left:0;
+    right: 80px;
+    top:0;
+    left: 0;
+    height: 40px;
+    width: auto;
+    background-color: #00a8ff;
+}
+.topButtonLayout{
+    position:absolute;
+    top:0;
+    right: 0;
+    height: 40px;
+    width: 80px;
+    background-color: #00a8ff;
+}
+.sideLayout{
+    position:absolute;
+    bottom: 80px;
+    left:0;
+    top:40px;
+    width: 300px;
+    height: auto;
+    background-color: #00a8ff;
+}
+.modLayout{
+    position:absolute;
+    color:white;
+    bottom: 100px;
+    left:320px;
+    right: 10px;
+    top: 50px;
+    width: auto;
+}
+.bottomLayout{
+    position:absolute;
+    bottom: 0;
+    left:0;
+    right: 0;
+    height: 80px;
+    width: auto;
+    background-color: #00a8ff;
+}
+
+/* Buttons */
+.btn{ background: none; border:none; }
+
+.btn_close{
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    top: 5px;
+    transition: 0.2s;
+}
+.btn_link{
+    background-color: #34495e;
+    border-radius: 5px;
+    color: #95a5a6;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 10px 10px 10px 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 240px;
+    transition: 0.2s;
+}
+.btn_launch{
+    background-color: #34495e;
+    border-radius: 5px;
+    color: #95a5a6;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 10px 10px 10px 10px;
+    position: absolute;
+    bottom: 20px;
+    width: 240px;
+    transition: 0.2s;
+}
+.btn_back{
+    background-color: #34495e;
+    border-radius: 5px;
+    color: #95a5a6;
+    font-size: 20px;
+    left: 25px;
+    bottom: 10px;
+    text-decoration: none;
+    padding: 10px 10px 10px 10px;
+    position: absolute;
+    transition: 0.2s;
+}
+.btn_store{
+    background-color: #34495e;
+    border-radius: 5px;
+    color: #95a5a6;
+    font-size: 20px;
+    left: 160px;
+    bottom: 10px;
+    text-decoration: none;
+    padding: 10px 10px 10px 10px;
+    position: absolute;
+    transition: 0.2s;
+}
+
+/* Button Hover Classes */
+.btn_back:hover{ color: #2980b9; }
+.btn_launch:hover{ color: #2980b9; }
+.btn_link:hover{ color: #2980b9; }
+.btn_close:hover{ color: #2980b9; }
+.btn_store:hover{ color: #2980b9; }
+
+/* Moditem styling */
+.modItem{ 
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 0px;
+    border-radius: 5px;
+    background-color: #2980b9;
+    display: flex; 
+    list-style:none; 
+    color:black;
+    transition:0.2s; 
+    padding: 10px 10px 10px 10px;
+}
+.modItem:hover{background-color:#2980b9;color:#3498db;cursor:pointer;}
+.modItem img{ margin-right:10px; }
+.modItem h2{ margin-top: -4px; color:black; }
+
+/* input */
+.input{
+    background: none;
+    border: none;
+    padding: 10px 10px 10px 10px;
+    font-size: 20px;
+    background-color: #2980b9;
+    color:#fff;
+    width: 98%;
+    border-radius: 5px;
+}

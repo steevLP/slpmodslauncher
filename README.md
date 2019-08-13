@@ -4,7 +4,7 @@ This Repo will always be the Development Repo of this launcher, this means it ma
 
 ## Features
 1. It's Opensource! It means someone did the development work for you.
-2. Its settings do contain everything the user will need and it's continuously expanding.
+2. Its settings do contain everything the user will need and are continuously expanding.
 3. Due to its JSON server backend, it's easy to create new mod pack items
 
 ## Setting the launcher up

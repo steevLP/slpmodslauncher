@@ -7,7 +7,7 @@ This Repo will allways be the Development Repo of this launcher, this means it m
 2. It's settings do contain everything the user will need and it's continuesly expanding.
 3. Due to it's json server backend it's easy to create new modpack items
 
-## Seting the launcher up
+## Setting the launcher up
 The setup is easy as nothing, all you need is the Github Repo and a Webserver. It requires only a few Steps and basicly no coding skill what so ever!
 
 After having downloaded the launcher the first thing we will need is setting the correct github repo. This step is needed to configure the Autopatcher!

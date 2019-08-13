@@ -3,7 +3,7 @@ The SLPMods Launcher is officially developed for the german gaming network [SLPN
 This Repo will always be the Development Repo of this launcher, this means it may contain major bugs and may not always be stable.
 
 ## Features
-1. It's Opensource! It means someone did the development work for you.
+1. It's Opensource! Means someone did the development work for you.
 2. Its settings do contain everything the user will need and are continuously expanding.
 3. Due to its JSON server backend, it's easy to create new mod pack items.
 

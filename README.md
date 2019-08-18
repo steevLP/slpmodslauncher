@@ -70,3 +70,5 @@ Updating the mod pack is as easy as adding the updated contents to a new zip fil
 ## Thanks to
 pierce.harriz for Creating  MCLC the module that made this project even possible.
 Look at it here: https://www.npmjs.com/package/minecraft-launcher-core | https://github.com/Pierce01/MinecraftLauncher-core
+
+![License](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)

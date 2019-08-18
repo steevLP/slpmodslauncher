@@ -8,7 +8,7 @@ This Repo will always be the Development Repo of this launcher, this means it ma
 3. Due to its JSON server backend, it's easy to create new mod pack items.
 
 ## Setting the launcher up
-The Tutorial has bee Moved to [The Wiki](https://github.com/steevLP/slpmodslauncher/wiki)
+The Tutorial has been Moved to [The Wiki](https://github.com/steevLP/slpmodslauncher/wiki)
 ## Screenshots
 ### Main Window
 ![Main Window](https://slpnetwork.tk/upload/main.png)

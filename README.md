@@ -9,6 +9,13 @@ This Repo will always be the Development Repo of this launcher, this means it ma
 
 ## Setting the launcher up
 The Tutorial has been Moved to [The Wiki](https://github.com/steevLP/slpmodslauncher/wiki)
+
+## Left Todo
+I will Probably implement it in the official Version sooner or later but here are some Ideas what you  may do yourself :D
+1. Multilanguage
+2. Displaying Profile on mainscreen
+
+
 ## Screenshots
 ### Main Window
 ![Main Window](https://slpnetwork.tk/upload/main.png)

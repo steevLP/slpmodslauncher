@@ -15,7 +15,6 @@ I will Probably implement it in the official Version sooner or later but here ar
 1. Multilanguage
 2. Displaying Profile on mainscreen
 
-
 ## Screenshots
 ### Main Window
 ![Main Window](https://slpnetwork.tk/upload/main.png)

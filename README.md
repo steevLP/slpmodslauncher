@@ -14,6 +14,7 @@ The Tutorial has been Moved to [The Wiki](https://github.com/steevLP/slpmodslaun
 I will Probably implement it in the official Version sooner or later but here are some Ideas what you  may do yourself :D
 1. Multilanguage Support
 2. Displaying Profile on mainscreen
+3. Implement Multy OS Support
 
 ## Screenshots
 ### Main Window

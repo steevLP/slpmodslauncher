@@ -6,11 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "publish": "electron-builder --publish always",
-    "build": "electron-builder"
+    "publish": "electron-builder -w --publish always",
+    "build": "electron-builder -w"
   },
   "build": {
-    "appId": "com.pixeldev.slpmods",
+    "appId": "com.pixeldev.notepage",
     "icon": "assets/icons/win/icon.ico",
     "nsis": {
       "installerIcon": "assets/icons/win/icon.ico",
@@ -28,13 +28,15 @@
   },
   "homepage": "https://github.com/steevLP/slpmods#readme",
   "dependencies": {
-    "electron": "^6.0.2",
-    "electron-builder": "^21.2.0",
-    "electron-log": "^3.0.7",
-    "electron-updater": "^4.1.2",
-    "minecraft-launcher-core": "^3.8.0",
+    "minecraft-launcher-core": "^3.11.2",
     "node-fetch": "^2.6.0",
     "request": "^2.88.0",
     "require-from-url": "^3.1.2"
+  },
+  "devDependencies": {
+    "electron": "^6.1.2",
+    "electron-builder": "^21.2.0",
+    "electron-log": "^3.0.8",
+    "electron-updater": "^4.1.2"
   }
 }

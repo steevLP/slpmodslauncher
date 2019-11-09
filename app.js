@@ -1,4 +1,4 @@
-const { Client, Authenticator } = require('minecraft-launcher-core');
+const { shell, Client, Authenticator } = require('minecraft-launcher-core');
 const {app, BrowserWindow,ipcMain, dialog} = require('electron');
 const fs = require('fs');
 
@@ -8,7 +8,7 @@ const {autoUpdater} = require("electron-updater");
 let OSname = require("os").userInfo().username;
 
 let launchable = "true";
-let mainWindow, consoleW = null;
+let mainWindow, consoleW, webBrowser = null;
 
 function createWindow () {
 
@@ -70,6 +70,8 @@ ipcMain.on('launch', (event, args) => {
     let opts;
     console.log(args);
     if(settings[packName].version === args[3]){
+        console.log(settings);
+        console.log('not installing');
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: null,
@@ -87,6 +89,7 @@ ipcMain.on('launch', (event, args) => {
         }
         settings[packName].version = args[3];
     }else{
+        console.log('installing');
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: args[2],
@@ -230,7 +233,6 @@ autoUpdater.on('update-downloaded', () => {
         return;
     }
 });
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

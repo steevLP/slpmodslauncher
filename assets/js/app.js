@@ -61,4 +61,4 @@ request({
             ipcRenderer.send('launch',[body[selected].name, body[selected].gameVersion, body[selected].packLink, body[selected].packVersion]);
         });  
     }
-})
+});

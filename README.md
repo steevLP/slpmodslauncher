@@ -14,12 +14,13 @@ The Tutorial has been Moved to [The Wiki](https://github.com/steevLP/slpmodslaun
 I will Probably implement it in the official Version sooner or later but here are some Ideas what you  may do yourself :D
 1. Multilanguage Support
 2. Displaying Profile on mainscreen
+3. Implement Multy OS Support
 
 ## Screenshots
 ### Main Window
-![Main Window](https://slpnetwork.tk/upload/main.png)
+![Main Window](https://slpnetwork.de/upload/main.png)
 ### Settings Window
-![Settings Window](https://slpnetwork.tk/upload/settings.png)
+![Settings Window](https://slpnetwork.de/upload/settings.png)
 
 ## Thanks to
 pierce.harriz for Creating  MCLC the module that made this project even possible.

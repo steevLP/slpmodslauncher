@@ -7,7 +7,7 @@ const host = require(path + '/assets/config/app.json');
 let body = document.getElementById('modLayout');
 let title = document.getElementById('modHeader');
 let btn_launch = document.getElementById('launch');
-let modbody = document.getElementById('body_div');
+let modbody = document.getElementById('modLayout');
 
 let selected;
 
@@ -20,12 +20,21 @@ request({
     json:true
 }, function (error, response, body) {
     if(error) throw error;
-
+    console.log(body);
     selected = (body.length - 1);
     for(let i = 0; i < body.length; i++){
-        console.log(selected);
-        console.log(i + ": " +  body[i].name);
-
+        /**
+         * =========================================================
+         * Use this if Item Creation fails
+         * =========================================================
+         * 
+         * console.log(body.length);
+         * console.log(i);
+         * console.log(selected);
+         * console.log(i + ": " +  body[i].name);
+         * 
+         */
+        
         //Definition of the specific mod Item
         let modItem = document.createElement("li");
         let modIcon = document.createElement("img");
@@ -35,6 +44,7 @@ request({
 
         modItem.addEventListener('click', () => {
             selected = modItem.dataset.mp_id;
+            modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;
             console.log(selected);
         });
 
@@ -54,11 +64,12 @@ request({
         console.log(body[selected].launcherBody);
 
         console.log(modbody)
-        body.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;
+        modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;
     
         //Launches the Instance
         btn_launch.addEventListener('click', (e) => {
             ipcRenderer.send('launch',[body[selected].name, body[selected].gameVersion, body[selected].packLink, body[selected].packVersion]);
         });  
+        
     }
 });

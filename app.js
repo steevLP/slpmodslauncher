@@ -1,13 +1,14 @@
 const { shell, Client, Authenticator } = require('minecraft-launcher-core');
 const {app, BrowserWindow,ipcMain, dialog} = require('electron');
 const fs = require('fs');
+let launchable = true;
 
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
 
 let OSname = require("os").userInfo().username;
 
-let launchable = "true";
+//let launchable = "true";
 let mainWindow, consoleW, webBrowser = null;
 
 function createWindow () {
@@ -39,39 +40,50 @@ function createWindow () {
     });
 }
 
-ipcMain.on('launch', (event, args) => {
-    console.log(args);
+function importSettings(){
 
-    let settings;
+    let returnal = undefined;
 
     if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){   
-            settings = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
+            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
         }else{
             fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`,JSON.stringify({email:'undefined', password:'undefined', min:512, max:4096, enableUpdate:'true', console:'false'}));
+            returnal = undefined;
         }
     }else{
         fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
+        returnal = undefined;
     }
+    return returnal;
+}
 
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ipcMain.on('launch', (event, args) => {
+    //console.log(args);
+    if(launchable === false) return console.error('Allready Executed \n Ignore this'); 
+    let settings = importSettings();
+    /*
+    console.log("Settings: " + settings);
     console.log(settings);
     console.log(args);
-
+    */
     //Data Validation
     if(settings === undefined) return dialog.showErrorBox('Du hast keinen Account angegeben!', 'Da wir jetzt erst eine settings.json erstellt haben, \nSolltest du vorher doch lieber in den einstellungen deinen account angeben!');
-    if(settings.email === 'undefined') return dialog.showErrorBox('Da fehlt noch was!', 'Deine Account daten sind unvollständig.\nGehe in die Einstellungen um das zu ändern (Email)');
-    if(settings.password === 'undefined') return dialog.showErrorBox('Da fehlt noch was!', 'Deine Account daten sind unvollständig.\nGehe in die Einstellungen um das zu ändern (Password)');
+    if(settings.email === undefined) return dialog.showErrorBox('Da fehlt noch was!', 'Deine Account daten sind unvollständig.\nGehe in die Einstellungen um das zu ändern (Email)');
+    if(settings.password === undefined) return dialog.showErrorBox('Da fehlt noch was!', 'Deine Account daten sind unvollständig.\nGehe in die Einstellungen um das zu ändern (Password)');
     
     let packName = args[0];
 
-    console.log(packName);
+    //console.log(packName);
     //Option definition
     if(!settings[packName]){  settings[packName] = { version:'download' }; }else{ settings[packName].version = args[3];}
     let opts;
-    console.log(args);
+    //console.log(args);
     if(settings[packName].version === args[3]){
-        console.log(settings);
-        console.log('not installing');
+        launchable = false;
+        //console.log(settings);
+        //console.log('not installing');
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: null,
@@ -86,10 +98,8 @@ ipcMain.on('launch', (event, args) => {
                 max: settings.max,
                 min: settings.min
             }
-        }
-        settings[packName].version = args[3];
-    }else{
-        console.log('installing');
+}    }else{
+        //console.log('installing');
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: args[2],
@@ -105,6 +115,7 @@ ipcMain.on('launch', (event, args) => {
                 min: settings.min
             }
         }
+        settings[packName].version = args[3];
     }
 
     consoleW = new BrowserWindow({
@@ -121,24 +132,29 @@ ipcMain.on('launch', (event, args) => {
     consoleW.loadFile('assets/views/console.html');
 
     const launcher = new Client();
-    if(launchable === "true"){
-
-        console.log(args);
-        console.log(settings);
+        console.log("Launch")
+        //console.log(args);
+        //console.log(settings);
         launcher.launch(opts);
-
+        mainWindow.webContents.send('launched','true');
         launchable = "false";
+
+        setTimeout(() => {
+            fs.writeFile(`C:/Users/${OSname}/Documents/.slpmods/settings.json`, JSON.stringify(settings), (err) => {
+                if (err) console.log(err);
+                console.log("runs");
+            });
+        },2000);
+
         if(settings.console == 'true'){
             consoleW.show();
         }
-    }else{ 
+    /*}else{ 
         return dialog.showErrorBox('Das Spiel Läuft schon!', 'Das Spiel ist schon gestartet.\nSchließe dein Spiel um ein neues zu starten!');
-    }
+    }*/
+    /*
 
-    fs.writeFile(`C:/Users/${OSname}/Documents/.slpmods/settings.json`, JSON.stringify(settings), (err) => {
-        if (err) console.log(err)
-    });
-
+    */
     launcher.on('close',() => {
         launchable = "true";
         consoleW.webContents.send('console-output', 'Minecraft terminated');    
@@ -159,7 +175,7 @@ ipcMain.on('launch', (event, args) => {
 
     });
 });
-
+//--------------------------------------------------------------------------------------------------------------------------
 /**
  * AUTOUPDATER
  * Uses github to Update The Software
@@ -178,22 +194,11 @@ function sendStatusToWindow(text) {
     })
 }
 
-autoUpdater.on('checking-for-update', () => {
-    sendStatusToWindow('Checking for update...');
-});
-
-autoUpdater.on('update-available', () => {
-    sendStatusToWindow('Update available.');
-});
-
-autoUpdater.on('update-not-available', () => {
-    sendStatusToWindow('Update not available.');
-});
-
-autoUpdater.on('error', (err) => {
-    sendStatusToWindow('Error in auto-updater. ' + err);
-});
-
+// Logging to Log file at: C:\Users\<USER>\AppData\Roaming\slpmods\log.log
+autoUpdater.on('checking-for-update', () => { sendStatusToWindow('Checking for update...'); });
+autoUpdater.on('update-available', () => { sendStatusToWindow('Update available.'); });
+autoUpdater.on('update-not-available', () => { sendStatusToWindow('Update not available.'); });
+autoUpdater.on('error', (err) => { sendStatusToWindow('Error in auto-updater. ' + err); });
 autoUpdater.on('download-progress', (progressObj) => {
 
     let log_message = "Download speed: " + progressObj.bytesPerSecond;
@@ -209,13 +214,15 @@ autoUpdater.on('update-downloaded', () => {
     //Looks for the Settings file if none is generated create and read it 
     let settings;
 
-    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
-        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){   
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){ // Validate Existencs of Folder
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){ // Validate Existencs of settings.json
             settings = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
         }else{
+            // Create Default Settings.json if not Existing
             fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`,JSON.stringify({email:'undefined', password:'undefined', min:512, max:4096, enableUpdate:'true', console:'false'}));
         }
     }else{
+        // Create Folder if Not Existing
         fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
     }
 

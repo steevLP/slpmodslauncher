@@ -61,15 +61,17 @@ request({
         modItem.setAttribute("id","mp");
         modItem.dataset.mp_id = i;
 
-        console.log(body[selected].launcherBody);
+        //console.log(body[selected].launcherBody);
 
-        console.log(modbody)
-        modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;
-    
-        //Launches the Instance
-        btn_launch.addEventListener('click', (e) => {
-            ipcRenderer.send('launch',[body[selected].name, body[selected].gameVersion, body[selected].packLink, body[selected].packVersion]);
-        });  
-        
+        //console.log(modbody)
+        modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;   
     }
+    ipcRenderer.on('launched', () => {
+        btn_launch.disabled = true;
+    })     
+    //Launches the Instance
+    btn_launch.addEventListener('click', (e) => {
+        ipcRenderer.send('launch',[body[selected].name, body[selected].gameVersion, body[selected].packLink, body[selected].packVersion]);
+        return;
+    });  
 });

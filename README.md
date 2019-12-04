@@ -15,6 +15,7 @@ I will Probably implement it in the official Version sooner or later but here ar
 1. Multilanguage Support
 2. Displaying Profile on mainscreen
 3. Implement Multy OS Support
+4. Private pack codes
 
 ## Screenshots
 ### Main Window

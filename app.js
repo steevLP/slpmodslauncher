@@ -1,12 +1,48 @@
 const { shell, Client, Authenticator } = require('minecraft-launcher-core');
 const {app, BrowserWindow,ipcMain, dialog} = require('electron');
+const request = require('request');
+const host = require('./assets/config/app.json');
+
 const fs = require('fs');
 let launchable = true;
 
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
-
 let OSname = require("os").userInfo().username;
+var path = process.cwd();
+
+function importDisplayPacks(){
+
+    let returnal = undefined;
+
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/display.json`)){   
+            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/display.json', "utf8"));
+        }else{
+            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/display.json`, "");
+            returnal = undefined;
+        }
+    }else{
+        fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
+        returnal = undefined;
+    }
+    return returnal;
+}
+
+//Pack Grabber
+request({
+    method:'GET',
+    uri:host.host,
+    json:true
+}, function load(error, response, body) {
+    if(error) throw error;
+    console.log(body);
+    fs.writeFile(`C:/Users/${OSname}/Documents/.slpmods/display.json`, JSON.stringify(body), (err) => {
+        if (err) console.log(err);
+        console.log("runs");
+    });
+});
+
 
 //let launchable = "true";
 let mainWindow, consoleW, webBrowser = null;
@@ -76,7 +112,6 @@ function importPacks(){
     return returnal;
 }
 
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ipcMain.on('launch', (event, args) => {
     //console.log(args);
     if(launchable === false) return console.error('Allready Executed \n Ignore this'); 
@@ -105,13 +140,13 @@ ipcMain.on('launch', (event, args) => {
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: null,
-            root: "C:/Users/"+OSname+"/Documents/.slpmods/"+args[0],
+            root: "C:/Users/"+OSname+"/Documents/.slpmods/modpacks/"+args[0],
             os: "windows",
             version: {
                 number: args[1],
                 type: "release"
             },
-            forge:"C:/Users/"+OSname+"/Documents/.slpmods/"+args[0]+"/bin/forge.jar",
+            forge:"C:/Users/"+OSname+"/Documents/.slpmods/modpacks/"+args[0]+"/bin/forge.jar",
             memory: {
                 max: settings.max,
                 min: settings.min
@@ -121,19 +156,20 @@ ipcMain.on('launch', (event, args) => {
         opts = {
             authorization: Authenticator.getAuth(settings.email, settings.password),
             clientPackage: args[2],
-            root: "C:/Users/"+OSname+"/Documents/.slpmods/"+args[0],
+            root: "C:/Users/"+OSname+"/Documents/.slpmods/modpacks/"+args[0],
             os: "windows",
             version: {
                 number: args[1],
                 type: "release"
             },
-            forge:"C:/Users/"+OSname+"/Documents/.slpmods/"+args[0]+"/bin/forge.jar",
+            forge:"C:/Users/"+OSname+"/Documents/.slpmods/modpacks/"+args[0]+"/bin/forge.jar",
             memory: {
                 max: settings.max,
                 min: settings.min
             }
         }
         packs[packName].version = args[3];
+        packs[packName].key = "none";
     }
 
     consoleW = new BrowserWindow({
@@ -193,7 +229,7 @@ ipcMain.on('launch', (event, args) => {
 
     });
 });
-//--------------------------------------------------------------------------------------------------------------------------
+
 /**
  * AUTOUPDATER
  * Uses github to Update The Software
@@ -249,7 +285,7 @@ autoUpdater.on('update-downloaded', () => {
             settings = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
         }else{
             // Create Default Settings.json if not Existing
-            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`,JSON.stringify({pack:"first_Run"}));
+            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`,JSON.stringify({packs:"first_run"}));
         }
     }else{
         // Create Folder if Not Existing

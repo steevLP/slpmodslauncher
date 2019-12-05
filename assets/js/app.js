@@ -1,77 +1,68 @@
 let { ipcRenderer } = require("electron");
-const request = require('request');
 var path = process.cwd();
-const host = require(path + '/assets/config/app.json');
+const fs = require('fs');
+let OSname = require("os").userInfo().username;
 
 //HtmlToJs Definition
 let body = document.getElementById('modLayout');
 let title = document.getElementById('modHeader');
 let btn_launch = document.getElementById('launch');
+let btn_key = document.getElementById('key');
 let modbody = document.getElementById('modLayout');
 
 let selected;
+let pack_list = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/display.json', "utf8"));
+
+console.log(pack_list);
 
 //Button Controller
+selected = (pack_list.length - 1);
+for(let i = 0; i < pack_list.length; i++){
+    /**
+     * =========================================================
+     * Use this if Item Creation fails
+     * =========================================================
+     * 
+     * console.log(body.length);
+     * console.log(i);
+     * console.log(selected);
+     * console.log(i + ": " +  body[i].name);
+     * 
+     */
+    
+    //Definition of the specific mod Item
+    let modItem = document.createElement("li");
+    let modIcon = document.createElement("img");
+    let modTitleTag = document.createElement("h2");
+    let modTitle = document.createTextNode(pack_list[i].name);
+    let ul_modslist = document.getElementById('modList');
 
-//Pack Grabber
-request({
-    method:'GET',
-    uri:host.host,
-    json:true
-}, function (error, response, body) {
-    if(error) throw error;
-    console.log(body);
-    selected = (body.length - 1);
-    for(let i = 0; i < body.length; i++){
-        /**
-         * =========================================================
-         * Use this if Item Creation fails
-         * =========================================================
-         * 
-         * console.log(body.length);
-         * console.log(i);
-         * console.log(selected);
-         * console.log(i + ": " +  body[i].name);
-         * 
-         */
-        
-        //Definition of the specific mod Item
-        let modItem = document.createElement("li");
-        let modIcon = document.createElement("img");
-        let modTitleTag = document.createElement("h2");
-        let modTitle = document.createTextNode(body[i].name);
-        let ul_modslist = document.getElementById('modList');
+    modItem.addEventListener('click', () => {
+        selected = modItem.dataset.mp_id;
+        modbody.innerHTML = "<h2>"+pack_list[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+pack_list[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+pack_list[selected].recommended+"</small><br>"+pack_list[selected].launcherBody;
+        console.log(selected);
+    });
 
-        modItem.addEventListener('click', () => {
-            selected = modItem.dataset.mp_id;
-            modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;
-            console.log(selected);
-        });
+    modTitleTag.style.color = 'white';
+    modIcon.src = pack_list[i].imageLink;
+    modIcon.width = 50;
+    modIcon.height = 50;
 
-        modTitleTag.style.color = 'white';
-        modIcon.src = body[i].imageLink;
-        modIcon.width = 50;
-        modIcon.height = 50;
+    modTitleTag.appendChild(modTitle);
+    modItem.appendChild(modIcon);
+    modItem.appendChild(modTitleTag);
+    ul_modslist.appendChild(modItem);
+    modItem.classList.add('modItem');
+    modItem.setAttribute("id","mp");
+    modItem.dataset.mp_id = i;
 
-        modTitleTag.appendChild(modTitle);
-        modItem.appendChild(modIcon);
-        modItem.appendChild(modTitleTag);
-        ul_modslist.appendChild(modItem);
-        modItem.classList.add('modItem');
-        modItem.setAttribute("id","mp");
-        modItem.dataset.mp_id = i;
+    //console.log(body[selected].launcherBody);
 
-        //console.log(body[selected].launcherBody);
+    //console.log(modbody)
+    modbody.innerHTML = "<h2>"+pack_list[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+pack_list[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+pack_list[selected].recommended+"</small><br>"+pack_list[selected].launcherBody;   
+}
 
-        //console.log(modbody)
-        modbody.innerHTML = "<h2>"+body[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+body[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+body[selected].recommended+"</small><br>"+body[selected].launcherBody;   
-    }
-    ipcRenderer.on('launched', () => {
-        btn_launch.disabled = true;
-    })     
-    //Launches the Instance
-    btn_launch.addEventListener('click', (e) => {
-        ipcRenderer.send('launch',[body[selected].name, body[selected].gameVersion, body[selected].packLink, body[selected].packVersion]);
-        return;
-    });  
-});
+ipcRenderer.on('launched', () => { btn_launch.disabled = true; })     
+//Launches the Instance
+btn_launch.addEventListener('click', (e) => { ipcRenderer.send('launch',[pack_list[selected].name, pack_list[selected].gameVersion, pack_list[selected].packLink, pack_list[selected].packVersion]);});
+btn_key.addEventListener('click', (e) => { ipcRenderer.send('inputCode',"true"); });  

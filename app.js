@@ -58,11 +58,30 @@ function importSettings(){
     return returnal;
 }
 
+function importPacks(){
+
+    let returnal = undefined;
+
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`)){   
+            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
+        }else{
+            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`,JSON.stringify({packs:"first_run"}));
+            returnal = undefined;
+        }
+    }else{
+        fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
+        returnal = undefined;
+    }
+    return returnal;
+}
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ipcMain.on('launch', (event, args) => {
     //console.log(args);
     if(launchable === false) return console.error('Allready Executed \n Ignore this'); 
     let settings = importSettings();
+    let packs = importPacks();
     /*
     console.log("Settings: " + settings);
     console.log(settings);
@@ -77,11 +96,10 @@ ipcMain.on('launch', (event, args) => {
 
     //console.log(packName);
     //Option definition
-    if(!settings[packName]){  settings[packName] = { version:'download' }; }else{ settings[packName].version = args[3];}
+    if(!packs[packName]){  packs[packName] = { version:'download' }; }else{ packs[packName].version = args[3];}
     let opts;
     //console.log(args);
-    if(settings[packName].version === args[3]){
-        launchable = false;
+    if(packs[packName].version === args[3]){
         //console.log(settings);
         //console.log('not installing');
         opts = {
@@ -115,7 +133,7 @@ ipcMain.on('launch', (event, args) => {
                 min: settings.min
             }
         }
-        settings[packName].version = args[3];
+        packs[packName].version = args[3];
     }
 
     consoleW = new BrowserWindow({
@@ -140,7 +158,7 @@ ipcMain.on('launch', (event, args) => {
         launchable = "false";
 
         setTimeout(() => {
-            fs.writeFile(`C:/Users/${OSname}/Documents/.slpmods/settings.json`, JSON.stringify(settings), (err) => {
+            fs.writeFile(`C:/Users/${OSname}/Documents/.slpmods/packs.json`, JSON.stringify(packs), (err) => {
                 if (err) console.log(err);
                 console.log("runs");
             });
@@ -220,6 +238,18 @@ autoUpdater.on('update-downloaded', () => {
         }else{
             // Create Default Settings.json if not Existing
             fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`,JSON.stringify({email:'undefined', password:'undefined', min:512, max:4096, enableUpdate:'true', console:'false'}));
+        }
+    }else{
+        // Create Folder if Not Existing
+        fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
+    }
+
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){ // Validate Existencs of Folder
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`)){ // Validate Existencs of settings.json
+            settings = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
+        }else{
+            // Create Default Settings.json if not Existing
+            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`,JSON.stringify({pack:"first_Run"}));
         }
     }else{
         // Create Folder if Not Existing

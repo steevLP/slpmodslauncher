@@ -1,3 +1,4 @@
 {
-    "host":"https://api.slpnetwork.de/mods/v1/packs/all"
+    "all":"http://localhost/mods/v1/packs/all",
+    "key":"http://localhost/mods/v1/packs/"
 }

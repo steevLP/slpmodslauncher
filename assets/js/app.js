@@ -62,7 +62,7 @@ for(let i = 0; i < pack_list.length; i++){
     modbody.innerHTML = "<h2>"+pack_list[selected].name+"</h2>"+"<small style=\"color: grey;\">Pack Version: "+pack_list[selected].packVersion+"</small><br><small style=\"color: grey;\">Empfohlener Ram: "+pack_list[selected].recommended+"</small><br>"+pack_list[selected].launcherBody;   
 }
 
-ipcRenderer.on('launched', () => { btn_launch.disabled = true; })     
+ipcRenderer.on('launched', () => { btn_launch.disabled = true; btn_launch.innerHTML = "Startet"})     
 //Launches the Instance
 btn_launch.addEventListener('click', (e) => { ipcRenderer.send('launch',[pack_list[selected].name, pack_list[selected].gameVersion, pack_list[selected].packLink, pack_list[selected].packVersion]);});
 btn_key.addEventListener('click', (e) => { ipcRenderer.send('inputCode',"true"); });  

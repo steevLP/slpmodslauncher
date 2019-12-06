@@ -11,28 +11,24 @@ const {autoUpdater} = require("electron-updater");
 let OSname = require("os").userInfo().username;
 var path = process.cwd();
 
-function importDisplayPacks(){
-
-    let returnal = undefined;
-
-    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
-        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/display.json`)){   
-            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/display.json', "utf8"));
-        }else{
-            fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/display.json`, "");
-            returnal = undefined;
-        }
+if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/modpacks`)){
     }else{
-        fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
-        returnal = undefined;
+        fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods/modpacks`);
     }
-    return returnal;
+    if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){   
+    }else{
+        fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`,JSON.stringify({email:'undefined', password:'undefined', min:512, max:4096, enableUpdate:'true', console:'false'}));
+    }
+}else{
+    fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
+    returnal = undefined;
 }
 
 //Pack Grabber
 request({
     method:'GET',
-    uri:host.host,
+    uri:host.all,
     json:true
 }, function load(error, response, body) {
     if(error) throw error;
@@ -81,6 +77,10 @@ function importSettings(){
     let returnal = undefined;
 
     if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        }else{
+            fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods/modspacks`);
+        }
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){   
             returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
         }else{
@@ -99,6 +99,10 @@ function importPacks(){
     let returnal = undefined;
 
     if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
+        }else{
+            fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods/modspacks`);
+        }
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`)){   
             returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
         }else{

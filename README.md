@@ -16,6 +16,7 @@ I will Probably implement it in the official Version sooner or later but here ar
 2. Displaying Profile on mainscreen
 3. Implement Multy OS Support
 4. Private pack codes
+5. Since my Method of making an Auto Updater Seems to fail now because of some reason i do not know if it works for the Launcher. so yeh proving that it does would be a good step i think.
 
 ## Screenshots
 ### Main Window

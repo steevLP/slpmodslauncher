@@ -22,7 +22,6 @@ if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
     }
 }else{
     fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
-    returnal = undefined;
 }
 
 //Pack Grabber
@@ -74,29 +73,24 @@ function createWindow () {
 
 function importSettings(){
 
-    let returnal = undefined;
-
     if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
         }else{
             fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods/modspacks`);
         }
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`)){   
-            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
+            return JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/settings.json', "utf8"));
         }else{
             fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/settings.json`,JSON.stringify({email:'undefined', password:'undefined', min:512, max:4096, enableUpdate:'true', console:'false'}));
-            returnal = undefined;
+           return undefined;
         }
     }else{
         fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
-        returnal = undefined;
+        return undefined;
     }
-    return returnal;
 }
 
 function importPacks(){
-
-    let returnal = undefined;
 
     if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods`)){
@@ -104,16 +98,15 @@ function importPacks(){
             fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods/modspacks`);
         }
         if(fs.existsSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`)){   
-            returnal = JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
+            return JSON.parse(fs.readFileSync('C:/Users/'+OSname+'/Documents/.slpmods/packs.json', "utf8"));
         }else{
             fs.writeFileSync(`C:/Users/${OSname}/Documents/.slpmods/packs.json`,JSON.stringify({packs:"first_run"}));
-            returnal = undefined;
+            return undefined;
         }
     }else{
         fs.mkdirSync(`C:/Users/${OSname}/Documents/.slpmods`);
-        returnal = undefined;
+        return undefined;
     }
-    return returnal;
 }
 
 ipcMain.on('launch', (event, args) => {
